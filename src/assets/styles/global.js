@@ -21,7 +21,7 @@ export default createGlobalStyle`
   }
 
   body {
-    background-color: ${({ theme }) => theme.backgroundColor};
+    background-color: ${({ theme }) => theme.colors.background};
   }
 
   body, input, button {

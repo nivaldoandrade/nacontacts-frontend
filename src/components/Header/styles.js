@@ -22,7 +22,7 @@ export const ContainerInputSearchBar = styled.div`
     border: 0;
     border-radius: 25px;
     padding: 0 1rem;
-    outline-color: #5061fc;
+    outline-color: ${({ theme }) => theme.colors.primary.main};
 
     &::placeholder {
       color: #bcbcbc;
