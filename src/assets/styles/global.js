@@ -25,7 +25,7 @@ export default createGlobalStyle`
   }
 
   body, input, button {
-    font: 700 1rem 'Sora', sans-serif;
+    font: 400 1rem 'Sora', sans-serif;
     color: black;
   }
 
