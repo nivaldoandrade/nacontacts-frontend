@@ -25,7 +25,7 @@ export const ContainerInputSearchBar = styled.div`
     outline-color: ${({ theme }) => theme.colors.primary.main};
 
     &::placeholder {
-      color: #bcbcbc;
+      color: ${({ theme }) => theme.colors.gray[200]};
     }
   }
 `;

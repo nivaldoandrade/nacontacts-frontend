@@ -26,7 +26,7 @@ export default createGlobalStyle`
 
   body, input, button {
     font: 400 1rem 'Sora', sans-serif;
-    color: black;
+    color: ${({ theme }) => theme.colors.gray[900]};
   }
 
   button  {
