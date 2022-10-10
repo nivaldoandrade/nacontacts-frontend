@@ -1,3 +1,5 @@
+import { PageHeader } from '../../components/PageHeader';
+
 export function EditContact() {
-  return <h1>EDITCONTACT PAGE</h1>;
+  return <PageHeader title="Editar Matheus Silva" />;
 }
