@@ -1,3 +1,4 @@
+import Button from '../../components/Button';
 import Input from '../../components/Input';
 import { PageHeader } from '../../components/PageHeader';
 import Select from '../../components/Select';
@@ -12,6 +13,10 @@ export function NewContact() {
         <option value="2">Twitter</option>
         <option value="3">Facebook</option>
       </Select>
+      <Button type="button">Cadastrar</Button>
+      <Button type="button" disabled>
+        Cadastrar
+      </Button>
     </>
   );
 }
