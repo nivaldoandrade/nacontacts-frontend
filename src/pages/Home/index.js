@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import arrowIcon from '../../assets/icons/arrow.svg';
 import editIcon from '../../assets/icons/edit.svg';
 import deleteIcon from '../../assets/icons/delete.svg';
@@ -20,7 +22,7 @@ export function Home() {
 
       <ListHeader>
         <strong>3 contatos</strong>
-        <a href="/">Novo Contato</a>
+        <Link to="/new">Novo Contato</Link>
       </ListHeader>
 
       <Divider />
@@ -43,45 +45,9 @@ export function Home() {
             <span>(41) 99999-9999</span>
           </div>
           <div className="actions">
-            <a href="/">
+            <Link to="/edit/1">
               <img src={editIcon} alt="Edit" />
-            </a>
-            <button type="button">
-              <img src={deleteIcon} alt="Delete" />
-            </button>
-          </div>
-        </Card>
-        <Card>
-          <div className="info">
-            <div className="info-header">
-              <strong>Mateus Silva</strong>
-              <small>instagram</small>
-            </div>
-            <span>mateus@devacademy.com.br</span>
-            <span>(41) 99999-9999</span>
-          </div>
-          <div className="actions">
-            <a href="/">
-              <img src={editIcon} alt="Edit" />
-            </a>
-            <button type="button">
-              <img src={deleteIcon} alt="Delete" />
-            </button>
-          </div>
-        </Card>
-        <Card>
-          <div className="info">
-            <div className="info-header">
-              <strong>Mateus Silva</strong>
-              <small>instagram</small>
-            </div>
-            <span>mateus@devacademy.com.br</span>
-            <span>(41) 99999-9999</span>
-          </div>
-          <div className="actions">
-            <a href="/">
-              <img src={editIcon} alt="Edit" />
-            </a>
+            </Link>
             <button type="button">
               <img src={deleteIcon} alt="Delete" />
             </button>
