@@ -12,12 +12,14 @@ import {
   ListContainer,
   Card
 } from './styles';
-import { Modal } from '../../components/Modal';
+// import { Modal } from '../../components/Modal';
+import { Loader } from '../../components/Loader';
 
 export function Home() {
   return (
     <Container>
-      <Modal danger />
+      <Loader />
+      {/* <Modal danger /> */}
       <InputSearchBarContainer>
         <input type="text" placeholder="Pesquisar contato..." />
       </InputSearchBarContainer>
