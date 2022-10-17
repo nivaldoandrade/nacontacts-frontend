@@ -10,6 +10,7 @@ export default styled.select`
   background-color: #fff;
   border: 2px solid transparent;
   transition: border-color 0.2s ease-in;
+  appearance: none;
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.gray[200]};
