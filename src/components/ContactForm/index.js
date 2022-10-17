@@ -9,6 +9,7 @@ import Select from '../Select';
 import Button from '../Button';
 
 import isEmailValid from '../../utils/isEmailValid';
+import formatPhone from '../../utils/formatPhone';
 
 import { Form, ButtonContainer } from './styles';
 
@@ -40,13 +41,17 @@ export function ContactForm({ buttonLabel }) {
     }
   }
 
+  function handleTelephoneChange(e) {
+    setTelephone(formatPhone(e.target.value));
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
 
     console.log({
       name,
       email,
-      telephone,
+      telephone: telephone.replace(/\D/g, ''),
       category
     });
   }
@@ -74,7 +79,8 @@ export function ContactForm({ buttonLabel }) {
         <Input
           placeholder="Telefone"
           value={telephone}
-          onChange={(e) => setTelephone(e.target.value)}
+          onChange={(e) => handleTelephoneChange(e)}
+          maxLength="15"
         />
       </FormGroup>
       <FormGroup>
