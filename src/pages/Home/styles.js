@@ -77,6 +77,9 @@ export const ListContainer = styled.div`
       }
 
       img {
+        transform: ${({ orderByName }) =>
+          orderByName === 'ASC' && 'rotate(180deg)'};
+        transition: transform 0.2s ease-in;
         margin-left: 8px;
       }
     }

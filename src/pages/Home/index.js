@@ -18,16 +18,18 @@ import {
 
 export function Home() {
   const [contacts, setContacts] = useState([]);
+  const [orderByName, setOrderByName] = useState('ASC');
 
   useEffect(() => {
-    fetch('http://localhost:3333/contacts')
+    console.log('useEffect');
+    fetch(`http://localhost:3333/contacts?orderBy=${orderByName}`)
       .then(async (response) => {
         const result = await response.json();
 
         setContacts(result);
       })
       .catch((error) => console.log('FETCH CONTACTS', error));
-  }, []);
+  }, [orderByName]);
 
   return (
     <Container>
@@ -44,9 +46,14 @@ export function Home() {
 
       <Divider />
 
-      <ListContainer>
+      <ListContainer orderByName={orderByName}>
         <header>
-          <button type="button">
+          <button
+            type="button"
+            onClick={() =>
+              setOrderByName((state) => (state === 'ASC' ? 'DESC' : 'ASC'))
+            }
+          >
             <span>Nome</span>
             <img src={arrowIcon} alt="Arrow" />
           </button>
