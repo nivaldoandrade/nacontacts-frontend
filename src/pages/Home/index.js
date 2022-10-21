@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect, useMemo } from 'react';
 
+import { Loader } from '../../components/Loader';
+
 import formatPhone from '../../utils/formatPhone';
+import delay from '../../utils/delay';
 
 import arrowIcon from '../../assets/icons/arrow.svg';
 import editIcon from '../../assets/icons/edit.svg';
@@ -20,6 +23,7 @@ export function Home() {
   const [contacts, setContacts] = useState([]);
   const [orderByName, setOrderByName] = useState('ASC');
   const [searchTerm, setSearchTerm] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   const filteredContacts = useMemo(
     () =>
@@ -30,23 +34,34 @@ export function Home() {
   );
 
   useEffect(() => {
-    console.log('useEffect');
+    setIsLoading(true);
     fetch(`http://localhost:3333/contacts?orderBy=${orderByName}`)
       .then(async (response) => {
+        await delay(2000);
+
         const result = await response.json();
 
         setContacts(result);
       })
-      .catch((error) => console.log('FETCH CONTACTS', error));
+      .catch((error) => console.log('FETCH CONTACTS', error))
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [orderByName]);
 
   function handleChangeSearchTerm(e) {
     setSearchTerm(e.target.value);
-    console.log(e.target.value);
   }
+
+  function handleToggleOrderByName() {
+    setOrderByName((state) => (state === 'ASC' ? 'DESC' : 'ASC'));
+  }
+
+  console.log('render');
 
   return (
     <Container>
+      <Loader isLoading={isLoading} />
       <InputSearchBarContainer>
         <input
           value={searchTerm}
@@ -69,12 +84,7 @@ export function Home() {
       <ListContainer orderByName={orderByName}>
         {filteredContacts.length > 0 && (
           <header>
-            <button
-              type="button"
-              onClick={() =>
-                setOrderByName((state) => (state === 'ASC' ? 'DESC' : 'ASC'))
-              }
-            >
+            <button type="button" onClick={handleToggleOrderByName}>
               <span>Nome</span>
               <img src={arrowIcon} alt="Arrow" />
             </button>
