@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 import formatPhone from '../../utils/formatPhone';
 
@@ -19,6 +19,15 @@ import {
 export function Home() {
   const [contacts, setContacts] = useState([]);
   const [orderByName, setOrderByName] = useState('ASC');
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredContacts = useMemo(
+    () =>
+      contacts.filter((contact) =>
+        contact.name.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+    [contacts, searchTerm]
+  );
 
   useEffect(() => {
     console.log('useEffect');
@@ -31,15 +40,26 @@ export function Home() {
       .catch((error) => console.log('FETCH CONTACTS', error));
   }, [orderByName]);
 
+  function handleChangeSearchTerm(e) {
+    setSearchTerm(e.target.value);
+    console.log(e.target.value);
+  }
+
   return (
     <Container>
       <InputSearchBarContainer>
-        <input type="text" placeholder="Pesquisar contato..." />
+        <input
+          value={searchTerm}
+          type="text"
+          placeholder="Pesquisar contato..."
+          onChange={(e) => handleChangeSearchTerm(e)}
+        />
       </InputSearchBarContainer>
 
       <ListHeader>
         <strong>
-          {contacts.length} {contacts.length === 1 ? 'contato' : 'contatos'}
+          {filteredContacts.length}{' '}
+          {filteredContacts.length === 1 ? 'contato' : 'contatos'}
         </strong>
         <Link to="/new">Novo Contato</Link>
       </ListHeader>
@@ -47,19 +67,21 @@ export function Home() {
       <Divider />
 
       <ListContainer orderByName={orderByName}>
-        <header>
-          <button
-            type="button"
-            onClick={() =>
-              setOrderByName((state) => (state === 'ASC' ? 'DESC' : 'ASC'))
-            }
-          >
-            <span>Nome</span>
-            <img src={arrowIcon} alt="Arrow" />
-          </button>
-        </header>
+        {filteredContacts.length > 0 && (
+          <header>
+            <button
+              type="button"
+              onClick={() =>
+                setOrderByName((state) => (state === 'ASC' ? 'DESC' : 'ASC'))
+              }
+            >
+              <span>Nome</span>
+              <img src={arrowIcon} alt="Arrow" />
+            </button>
+          </header>
+        )}
 
-        {contacts.map((contact) => (
+        {filteredContacts.map((contact) => (
           <Card key={contact.id}>
             <div className="info">
               <div className="info-header">
