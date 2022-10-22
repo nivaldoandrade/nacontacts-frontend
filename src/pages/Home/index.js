@@ -34,19 +34,26 @@ export function Home() {
   );
 
   useEffect(() => {
-    setIsLoading(true);
-    fetch(`http://localhost:3333/contacts?orderBy=${orderByName}`)
-      .then(async (response) => {
-        await delay(2000);
+    async function loadContacts() {
+      try {
+        setIsLoading(true);
+
+        const response = await fetch(
+          `http://localhost:3333/contacts?orderBy=${orderByName}`
+        );
+
+        await delay(500);
 
         const result = await response.json();
-
         setContacts(result);
-      })
-      .catch((error) => console.log('FETCH CONTACTS', error))
-      .finally(() => {
+      } catch (error) {
+        console.log('FETCH CONTACTS', error);
+      } finally {
         setIsLoading(false);
-      });
+      }
+    }
+
+    loadContacts();
   }, [orderByName]);
 
   function handleChangeSearchTerm(e) {
