@@ -3,8 +3,9 @@ import { useState, useEffect, useMemo } from 'react';
 
 import { Loader } from '../../components/Loader';
 
+import ContactsService from '../../services/ContactsService';
+
 import formatPhone from '../../utils/formatPhone';
-import delay from '../../utils/delay';
 
 import arrowIcon from '../../assets/icons/arrow.svg';
 import editIcon from '../../assets/icons/edit.svg';
@@ -38,13 +39,8 @@ export function Home() {
       try {
         setIsLoading(true);
 
-        const response = await fetch(
-          `http://localhost:3333/contacts?orderBy=${orderByName}`
-        );
+        const result = await ContactsService.listContacts(orderByName);
 
-        await delay(500);
-
-        const result = await response.json();
         setContacts(result);
       } catch (error) {
         console.log('FETCH CONTACTS', error);
