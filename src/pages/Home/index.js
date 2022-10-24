@@ -7,6 +7,8 @@ import ContactsService from '../../services/ContactsService';
 
 import formatPhone from '../../utils/formatPhone';
 
+import APIError from '../../errors/APIError';
+
 import arrowIcon from '../../assets/icons/arrow.svg';
 import editIcon from '../../assets/icons/edit.svg';
 import deleteIcon from '../../assets/icons/delete.svg';
@@ -43,7 +45,13 @@ export function Home() {
 
         setContacts(result);
       } catch (error) {
-        console.log('FETCH CONTACTS', error);
+        if (error instanceof APIError) {
+          // MOSTRAR ALGO PARA USUÁRIO RELACIONADO ALGUM ERRO DA API
+          console.log(error);
+        } else {
+          // MOSTRAR ALGO PARA USUÁRIO RELACIONADO ALGUM ERRO NO CÓDIGO/JAVASCRIPT NO FRONT-END
+          console.log(error);
+        }
       } finally {
         setIsLoading(false);
       }
