@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect, useMemo } from 'react';
 
 import { Loader } from '../../components/Loader';
+import { Error } from '../../components/Error';
 
 import ContactsService from '../../services/ContactsService';
 
@@ -27,6 +28,7 @@ export function Home() {
   const [orderByName, setOrderByName] = useState('ASC');
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [typeError, setTypeError] = useState('');
 
   const filteredContacts = useMemo(
     () =>
@@ -52,6 +54,8 @@ export function Home() {
           // MOSTRAR ALGO PARA USUÁRIO RELACIONADO ALGUM ERRO NO CÓDIGO/JAVASCRIPT NO FRONT-END
           console.log(error);
         }
+
+        setTypeError(error.name);
       } finally {
         setIsLoading(false);
       }
@@ -68,8 +72,6 @@ export function Home() {
     setOrderByName((state) => (state === 'ASC' ? 'DESC' : 'ASC'));
   }
 
-  console.log('render');
-
   return (
     <Container>
       <Loader isLoading={isLoading} />
@@ -82,15 +84,19 @@ export function Home() {
         />
       </InputSearchBarContainer>
 
-      <ListHeader>
-        <strong>
-          {filteredContacts.length}{' '}
-          {filteredContacts.length === 1 ? 'contato' : 'contatos'}
-        </strong>
+      <ListHeader typeError={typeError}>
+        {!typeError && (
+          <strong>
+            {filteredContacts.length}{' '}
+            {filteredContacts.length === 1 ? 'contato' : 'contatos'}
+          </strong>
+        )}
         <Link to="/new">Novo Contato</Link>
       </ListHeader>
 
       <Divider />
+
+      {typeError && <Error typeError={typeError} />}
 
       <ListContainer orderByName={orderByName}>
         {filteredContacts.length > 0 && (
