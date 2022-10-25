@@ -1,30 +1,28 @@
 import PropTypes from 'prop-types';
 
-import APIError from '../../errors/APIError';
-
 import Button from '../Button';
-import sadIcon from '../../assets/icons/sad.svg';
 
 import { ErrorContainer } from './styles';
 
-export function Error({ typeError }) {
+export function Error({ icon, message, onCLick }) {
   return (
     <ErrorContainer>
-      <img src={sadIcon} alt="Sad" />
+      <img src={icon.src} alt={icon.alt} />
       <div className="details">
-        <strong>
-          {typeError === APIError.name
-            ? 'Ocorreu um erro ao obter os seus contatos!'
-            : 'Tente novamente mais tarde!'}
-        </strong>
-        {typeError === APIError.name && (
-          <Button type="button">Tentar novamente</Button>
-        )}
+        <strong>{message}</strong>
+        <Button type="button" onClick={onCLick()}>
+          Tentar novamente
+        </Button>
       </div>
     </ErrorContainer>
   );
 }
 
 Error.propTypes = {
-  typeError: PropTypes.string.isRequired
+  icon: PropTypes.shape({
+    src: PropTypes.string.isRequired,
+    alt: PropTypes.string.isRequired
+  }).isRequired,
+  message: PropTypes.string.isRequired,
+  onCLick: PropTypes.func.isRequired
 };

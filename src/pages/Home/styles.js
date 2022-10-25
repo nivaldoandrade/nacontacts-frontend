@@ -25,8 +25,8 @@ export const InputSearchBarContainer = styled.div`
 export const ListHeader = styled.header`
   display: flex;
   align-items: center;
-  justify-content: ${({ typeError }) =>
-    typeError ? 'flex-end' : 'space-between'};
+  justify-content: ${({ hasError }) =>
+    hasError ? 'flex-end' : 'space-between'};
   margin-top: 2rem;
 
   strong {
