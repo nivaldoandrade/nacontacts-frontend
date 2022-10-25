@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { Link } from 'react-router-dom';
 import { useState, useEffect, useMemo, useCallback } from 'react';
 
@@ -14,12 +15,14 @@ import arrowIcon from '../../assets/icons/arrow.svg';
 import editIcon from '../../assets/icons/edit.svg';
 import deleteIcon from '../../assets/icons/delete.svg';
 import sadIcon from '../../assets/icons/sad.svg';
+import emptyBoxIcon from '../../assets/icons/empty-box.svg';
 
 import {
   Container,
   InputSearchBarContainer,
   ListHeader,
   Divider,
+  EmptyContainer,
   ListContainer,
   Card
 } from './styles';
@@ -81,17 +84,28 @@ export function Home() {
   return (
     <Container>
       <Loader isLoading={isLoading} />
-      <InputSearchBarContainer>
-        <input
-          value={searchTerm}
-          type="text"
-          placeholder="Pesquisar contato..."
-          onChange={(e) => handleChangeSearchTerm(e)}
-        />
-      </InputSearchBarContainer>
+      {!hasError && contacts.length > 0 && (
+        <InputSearchBarContainer>
+          <input
+            value={searchTerm}
+            type="text"
+            placeholder="Pesquisar contato..."
+            onChange={(e) => handleChangeSearchTerm(e)}
+          />
+        </InputSearchBarContainer>
+      )}
 
-      <ListHeader hasError={hasError}>
-        {!hasError && (
+      <ListHeader
+        hasError={hasError}
+        justifyContent={
+          hasError
+            ? 'flex-end'
+            : contacts.length > 0
+            ? 'space-between'
+            : 'center'
+        }
+      >
+        {!hasError && contacts.length > 0 && (
           <strong>
             {filteredContacts.length}{' '}
             {filteredContacts.length === 1 ? 'contato' : 'contatos'}
@@ -102,13 +116,26 @@ export function Home() {
 
       <Divider />
 
-      {hasError ? (
+      {hasError && (
         <Error
           icon={{ src: sadIcon, alt: 'sad' }}
           message="Ocorreu um erro ao obter os seus contatos!"
           onCLick={() => handleLoadContacts}
         />
-      ) : (
+      )}
+
+      {contacts.length === 0 && !isLoading && !hasError && (
+        <EmptyContainer>
+          <img src={emptyBoxIcon} alt="Empty box" />
+          <span>
+            Você ainda não tem nenhum contato cadastrado! <br />
+            Clique no botão<strong> ”Novo contato” </strong>à cima para
+            cadastrar o seu primeiro!
+          </span>
+        </EmptyContainer>
+      )}
+
+      {!hasError && (
         <ListContainer orderByName={orderByName}>
           {filteredContacts.length > 0 && (
             <header>

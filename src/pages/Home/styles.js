@@ -25,8 +25,7 @@ export const InputSearchBarContainer = styled.div`
 export const ListHeader = styled.header`
   display: flex;
   align-items: center;
-  justify-content: ${({ hasError }) =>
-    hasError ? 'flex-end' : 'space-between'};
+  justify-content: ${({ justifyContent }) => justifyContent};
   margin-top: 2rem;
 
   strong {
@@ -60,6 +59,27 @@ export const Divider = styled.div`
   opacity: 0.2;
   border-radius: 1px;
   margin: 16px 0;
+`;
+
+export const EmptyContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  img {
+    width: 110px;
+    margin-bottom: 16px;
+  }
+
+  span {
+    text-align: center;
+    line-height: 20px;
+    color: ${({ theme }) => theme.colors.gray[200]};
+
+    strong {
+      color: ${({ theme }) => theme.colors.primary.main};
+    }
+  }
 `;
 
 export const ListContainer = styled.div`
