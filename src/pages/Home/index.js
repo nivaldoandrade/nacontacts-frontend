@@ -16,6 +16,7 @@ import editIcon from '../../assets/icons/edit.svg';
 import deleteIcon from '../../assets/icons/delete.svg';
 import sadIcon from '../../assets/icons/sad.svg';
 import emptyBoxIcon from '../../assets/icons/empty-box.svg';
+import magnifierQuestionIcon from '../../assets/icons/magnifier-question.svg';
 
 import {
   Container,
@@ -23,6 +24,7 @@ import {
   ListHeader,
   Divider,
   EmptyContainer,
+  SearchEmptyContainer,
   ListContainer,
   Card
 } from './styles';
@@ -133,6 +135,16 @@ export function Home() {
             cadastrar o seu primeiro!
           </span>
         </EmptyContainer>
+      )}
+
+      {!hasError && contacts.length > 0 && filteredContacts.length < 1 && (
+        <SearchEmptyContainer>
+          <img src={magnifierQuestionIcon} alt="Magnifier question" />
+          <span>
+            Nenhum resultado foi encontrado para
+            <b> ”{searchTerm}”</b>.
+          </span>
+        </SearchEmptyContainer>
       )}
 
       {!hasError && (

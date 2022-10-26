@@ -82,6 +82,18 @@ export const EmptyContainer = styled.div`
   }
 `;
 
+export const SearchEmptyContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+
+  span {
+    color: ${({ theme }) => theme.colors.gray[200]};
+    margin-left: 24px;
+    /* word-break: break-all; */
+    overflow-wrap: anywhere;
+  }
+`;
+
 export const ListContainer = styled.div`
   header {
     margin-bottom: 8px;
