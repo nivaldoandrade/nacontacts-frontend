@@ -24,7 +24,7 @@ export default createGlobalStyle`
     background-color: ${({ theme }) => theme.colors.background};
   }
 
-  body, input, button {
+  body, input, button, select {
     font: 400 1rem 'Sora', sans-serif;
     color: ${({ theme }) => theme.colors.gray[900]};
   }
