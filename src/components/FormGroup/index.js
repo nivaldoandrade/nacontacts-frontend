@@ -9,7 +9,7 @@ export function FormGroup({ children, error, isLoading }) {
     <Container>
       <div className="form-item">
         {children}
-        {!isLoading && (
+        {isLoading && (
           <div className="loader">
             <Spinner size={16} />
           </div>
