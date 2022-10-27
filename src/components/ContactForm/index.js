@@ -15,7 +15,7 @@ import formatPhone from '../../utils/formatPhone';
 
 import { Form, ButtonContainer } from './styles';
 
-export function ContactForm({ buttonLabel }) {
+export function ContactForm({ buttonLabel, onSubmit }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [telephone, setTelephone] = useState('');
@@ -71,12 +71,7 @@ export function ContactForm({ buttonLabel }) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    console.log({
-      name,
-      email,
-      telephone: telephone.replace(/\D/g, ''),
-      categoryId
-    });
+    onSubmit({ name, email, telephone, categoryId });
   }
 
   return (
@@ -131,5 +126,6 @@ export function ContactForm({ buttonLabel }) {
 }
 
 ContactForm.propTypes = {
-  buttonLabel: PropTypes.string.isRequired
+  buttonLabel: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func.isRequired
 };
