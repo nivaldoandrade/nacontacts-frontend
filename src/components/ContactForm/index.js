@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useErrors } from '../../hooks/useErrors';
+
+import CategoriesService from '../../services/CategoriesService';
 
 import { FormGroup } from '../FormGroup';
 import Input from '../Input';
@@ -17,12 +19,25 @@ export function ContactForm({ buttonLabel }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [telephone, setTelephone] = useState('');
-  const [category, setCategory] = useState('');
+  const [categoryId, setCategoryId] = useState('');
+  const [categories, setCategories] = useState([]);
 
   const { errors, setError, removeError, getErrorMessageByFieldName } =
     useErrors();
 
   const isFormValid = name && errors.length === 0;
+
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const result = await CategoriesService.get();
+
+        setCategories(result);
+      } catch {}
+    }
+
+    loadCategories();
+  }, []);
 
   function handleNameChange(e) {
     setName(e.target.value);
@@ -55,7 +70,7 @@ export function ContactForm({ buttonLabel }) {
       name,
       email,
       telephone: telephone.replace(/\D/g, ''),
-      category
+      categoryId
     });
   }
 
@@ -87,12 +102,16 @@ export function ContactForm({ buttonLabel }) {
         />
       </FormGroup>
       <FormGroup>
-        <Select value={category} onChange={(e) => setCategory(e.target.value)}>
-          <option value="" disabled>
-            Categorias
-          </option>
-          <option value="instagram">Instagram</option>
-          <option value="twitter">Twitter</option>
+        <Select
+          value={categoryId}
+          onChange={(e) => setCategoryId(e.target.value)}
+        >
+          <option value="">Sem categoria</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
         </Select>
       </FormGroup>
 
