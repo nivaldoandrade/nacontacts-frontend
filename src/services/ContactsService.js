@@ -10,7 +10,12 @@ class ContactsService {
   }
 
   async createContact(data) {
-    return this.httpClient.post('/contacts', data);
+    return this.httpClient.post('/contacts', {
+      data,
+      headers: {
+        Authorization: 'MyToken'
+      }
+    });
   }
 }
 
