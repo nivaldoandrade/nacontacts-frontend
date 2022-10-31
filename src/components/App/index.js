@@ -7,6 +7,7 @@ import { Container } from './styles';
 import { Header } from '../Header';
 // import { ContactList } from '../ContactsList';
 import { Routes } from '../../routes';
+import { ToastContainer } from '../Toast/ToastContainer';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         {/* <ContactList /> */}
         <Routes />
       </Container>
+      <ToastContainer />
       <GlobalStyles />
     </ThemeProvider>
   );
