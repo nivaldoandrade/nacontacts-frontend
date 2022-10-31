@@ -1,6 +1,9 @@
 import styled, { css } from 'styled-components';
 
-export default styled.button`
+export const StyledButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   /* width: 100%; */
   padding: 0 16px;
   height: 52px;
@@ -23,7 +26,7 @@ export default styled.button`
   }
 
   &[disabled] {
-    background-color: #ccc;
+    background-color: ${({ theme }) => theme.colors.gray[100]};
     cursor: not-allowed;
   }
 

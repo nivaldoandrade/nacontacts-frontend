@@ -19,6 +19,11 @@ export default styled.input`
     border-color: ${({ theme }) => theme.colors.primary.main};
   }
 
+  &[disabled] {
+    background-color: ${({ theme }) => theme.colors.gray[100]};
+    opacity: 0.7;
+  }
+
   ${({ theme, error }) =>
     error &&
     css`
