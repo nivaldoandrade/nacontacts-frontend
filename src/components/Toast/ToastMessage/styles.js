@@ -16,6 +16,7 @@ export const Container = styled.div`
   background-color: green;
   padding: 16px 32px;
   color: #fff;
+  cursor: pointer;
   border-radius: 4px;
   box-shadow: 0px 20px 20px -16px rgba(0, 0, 0, 0.25);
 
