@@ -1,39 +1,40 @@
 export default class EventManager {
   constructor() {
-    this.listeners = {
-      // key : value
-      // addtoast: [() => {}, () = > {}]
-    };
+    this.listeners = new Map();
   }
 
-  on(event, listener) {
-    if (!this.listeners[event]) {
-      this.listeners[event] = [];
+  subscribe(event, listener) {
+    if (this.hasListener(event)) {
+      this.listeners.set(event, []);
     }
 
-    this.listeners[event].push(listener);
+    this.listeners.get(event).push(listener);
   }
 
   emit(event, payload) {
-    if (!this.listeners[event]) {
+    if (this.hasListener(event)) {
       return;
     }
 
-    this.listeners[event].forEach((listener) => {
+    this.listeners.get(event).forEach((listener) => {
       listener(payload);
     });
   }
 
-  removeListener(event, listenerToRemove) {
-    if (!this.listeners[event]) {
+  unsubscribe(event, listenerToRemove) {
+    if (this.hasListener(event)) {
       return;
     }
 
-    const filteredListeners = this.listeners[event].filter(
-      (listener) => listener !== listenerToRemove
-    );
+    const filteredListeners = this.listeners
+      .get(event)
+      .filter((listener) => listener !== listenerToRemove);
 
-    this.listeners[event] = filteredListeners;
+    this.listeners.set(event, filteredListeners);
+  }
+
+  hasListener(event) {
+    return !this.listeners.has(event);
   }
 }
 
@@ -47,12 +48,12 @@ function addtoast2(payload) {
   console.log('added toast 2', payload);
 }
 
-toastEventManager.on('addtoast', addtoast1);
+toastEventManager.subscribe('addtoast', addtoast1);
 
-toastEventManager.on('addtoast', addtoast2);
+toastEventManager.subscribe('addtoast', addtoast2);
 
 toastEventManager.emit('addtoast', { type: 'danger', text: 'texto' });
 
-toastEventManager.removeListener('addtoast', addtoast2);
+toastEventManager.unsubscribe('addtoast', addtoast2);
 
 toastEventManager.emit('addtoast', 'depois de remover o addtoast2...');
