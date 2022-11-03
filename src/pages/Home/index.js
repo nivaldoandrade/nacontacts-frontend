@@ -50,8 +50,13 @@ export function Home() {
 
       const result = await ContactsService.listContacts(orderByName);
 
+      const formattedContacts = result.map((contact) => ({
+        ...contact,
+        phoneFormatted: contact.phone && formatPhone(contact.phone)
+      }));
+
       setHasError(false);
-      setContacts(result);
+      setContacts(formattedContacts);
     } catch (error) {
       if (error instanceof APIError) {
         // MOSTRAR ALGO PARA USUÁRIO RELACIONADO ALGUM ERRO DA API
@@ -168,7 +173,7 @@ export function Home() {
                   )}
                 </div>
                 <span>{contact.email}</span>
-                <span>{formatPhone(contact.phone)}</span>
+                <span>{contact.phoneFormatted}</span>
               </div>
               <div className="actions">
                 <Link to={`/edit/${contact.id}`}>
