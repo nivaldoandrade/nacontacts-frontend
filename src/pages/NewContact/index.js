@@ -16,8 +16,15 @@ export function NewContact() {
       const result = await ContactsService.createContact(data);
 
       console.log(result);
-    } catch (error) {
-      alert('Ocorreu um erro!!');
+    } catch {
+      const event = new CustomEvent('addtoast', {
+        detail: {
+          type: 'danger',
+          text: 'Ocorreu um erro ao cadastra o contato!'
+        }
+      });
+
+      window.dispatchEvent(event);
     }
   }
   return (
