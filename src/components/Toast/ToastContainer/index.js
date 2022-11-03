@@ -2,28 +2,28 @@ import { useEffect, useState } from 'react';
 
 import { ToastMessage } from '../ToastMessage';
 
+import { toastEventManager } from '../../../utils/toast';
+
 import { Container } from './styles';
 
 export function ToastContainer() {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    function handleAddEventListener(e) {
-      console.log(e);
+    function handleAddEventListener({ type, text }) {
       setMessages((state) => [
         ...state,
         {
           id: Math.random(),
-          type: e.detail.type,
-          text: e.detail.text
+          type,
+          text
         }
       ]);
     }
-
-    window.addEventListener('addtoast', handleAddEventListener);
+    toastEventManager.subscribe('addtoast', handleAddEventListener);
 
     return () => {
-      window.removeEventListener('addtoast', handleAddEventListener);
+      toastEventManager.unsubscribe('addtoast', handleAddEventListener);
     };
   }, []);
 

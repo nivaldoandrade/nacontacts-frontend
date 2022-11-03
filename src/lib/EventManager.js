@@ -38,22 +38,20 @@ export default class EventManager {
   }
 }
 
-const toastEventManager = new EventManager();
+// function addtoast1(payload) {
+//   console.log('added toast 1', payload);
+// }
 
-function addtoast1(payload) {
-  console.log('added toast 1', payload);
-}
+// function addtoast2(payload) {
+//   console.log('added toast 2', payload);
+// }
 
-function addtoast2(payload) {
-  console.log('added toast 2', payload);
-}
+// toastEventManager.subscribe('addtoast', addtoast1);
 
-toastEventManager.subscribe('addtoast', addtoast1);
+// toastEventManager.subscribe('addtoast', addtoast2);
 
-toastEventManager.subscribe('addtoast', addtoast2);
+// toastEventManager.emit('addtoast', { type: 'danger', text: 'texto' });
 
-toastEventManager.emit('addtoast', { type: 'danger', text: 'texto' });
+// toastEventManager.unsubscribe('addtoast', addtoast2);
 
-toastEventManager.unsubscribe('addtoast', addtoast2);
-
-toastEventManager.emit('addtoast', 'depois de remover o addtoast2...');
+// toastEventManager.emit('addtoast', 'depois de remover o addtoast2...');
