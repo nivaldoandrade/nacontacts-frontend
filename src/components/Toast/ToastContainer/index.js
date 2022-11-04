@@ -10,13 +10,14 @@ export function ToastContainer() {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    function handleAddEventListener({ type, text }) {
+    function handleAddEventListener({ type, text, duration }) {
       setMessages((state) => [
         ...state,
         {
           id: Math.random(),
           type,
-          text
+          text,
+          duration
         }
       ]);
     }
