@@ -21,6 +21,12 @@ class ContactsService {
       }
     });
   }
+
+  updateContactById(id, data) {
+    return this.httpClient.put(`/contacts/${id}`, {
+      data
+    });
+  }
 }
 
 export default new ContactsService();
