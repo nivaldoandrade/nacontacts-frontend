@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Overlay = styled.div`
   width: 100%;
   height: 100%;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   background: rgba(0, 0, 0, 0.6);
@@ -21,7 +21,7 @@ export const Container = styled.div`
   border-radius: 4px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04);
 
-  h1 {
+  h1:first-child {
     font-size: 22px;
     margin-bottom: 8px;
     color: ${({ theme, danger }) =>
@@ -38,7 +38,7 @@ export const Container = styled.div`
       background-color: transparent;
       border: 0;
       color: ${({ theme }) => theme.colors.gray[200]};
-      margin-right: 8px;
+      margin-right: 16px;
     }
   }
 `;

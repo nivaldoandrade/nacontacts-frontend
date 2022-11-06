@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 
 import { Loader } from '../../components/Loader';
 import { Error } from '../../components/Error';
+import { Modal } from '../../components/Modal';
 
 import ContactsService from '../../services/ContactsService';
 
@@ -90,6 +91,14 @@ export function Home() {
 
   return (
     <Container>
+      <Modal
+        title="Tem certeza que deseja remover o contato ”Mateus Silva”?"
+        subtitle="Esta ação não poderá ser desfeita!"
+        confirmLabel="Deletar"
+        danger
+        onCancel={() => alert('Cancelar')}
+        onConfirm={() => alert('Deletar')}
+      />
       <Loader isLoading={isLoading} />
       {!hasError && contacts.length > 0 && (
         <InputSearchBarContainer>
