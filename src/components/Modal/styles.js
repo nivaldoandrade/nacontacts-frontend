@@ -39,6 +39,10 @@ export const Container = styled.div`
       border: 0;
       color: ${({ theme }) => theme.colors.gray[200]};
       margin-right: 16px;
+
+      &[disabled] {
+        cursor: not-allowed;
+      }
     }
   }
 `;

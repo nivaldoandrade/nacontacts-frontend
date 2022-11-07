@@ -26,8 +26,8 @@ export const StyledButton = styled.button`
   }
 
   &[disabled] {
-    background-color: ${({ theme }) => theme.colors.gray[100]};
-    cursor: not-allowed;
+    background-color: ${({ theme }) => theme.colors.gray[100]} !important;
+    cursor: not-allowed !important;
   }
 
   ${({ theme, danger }) =>

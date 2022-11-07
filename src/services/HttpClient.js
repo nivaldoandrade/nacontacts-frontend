@@ -16,16 +16,25 @@ class HttpClient {
   post(path, options) {
     return this.makeRequest(path, {
       method: 'POST',
-      data: options.data,
-      headers: options.headers
+      data: options?.data,
+      headers: options?.headers
     });
   }
 
   put(path, options) {
     return this.makeRequest(path, {
       method: 'PUT',
-      data: options.data,
-      headers: options.headers
+      data: options?.data,
+      headers: options?.headers
+    });
+  }
+
+  async delete(path, options) {
+    await delay(5000);
+
+    return this.makeRequest(path, {
+      method: 'DELETE',
+      headers: options?.headers
     });
   }
 
@@ -54,7 +63,7 @@ class HttpClient {
 
     const contentType = response.headers.get('content-type');
 
-    if (contentType.includes('application/json')) {
+    if (contentType?.includes('application/json')) {
       responseBody = await response.json();
     }
 

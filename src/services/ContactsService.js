@@ -5,7 +5,7 @@ class ContactsService {
     this.httpClient = new HttpClient('http://localhost:3333');
   }
 
-  async listContacts(orderByName = 'ASC') {
+  listContacts(orderByName = 'ASC') {
     return this.httpClient.get(`/contacts?orderBy=${orderByName}`);
   }
 
@@ -13,7 +13,7 @@ class ContactsService {
     return this.httpClient.get(`/contacts/${id}`);
   }
 
-  async createContact(data) {
+  createContact(data) {
     return this.httpClient.post('/contacts', {
       data,
       headers: {
@@ -26,6 +26,10 @@ class ContactsService {
     return this.httpClient.put(`/contacts/${id}`, {
       data
     });
+  }
+
+  deleteContactById(id) {
+    return this.httpClient.delete(`/contacts/${id}`);
   }
 }
 
