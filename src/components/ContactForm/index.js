@@ -14,14 +14,15 @@ import isEmailValid from '../../utils/isEmailValid';
 import formatPhone from '../../utils/formatPhone';
 
 import { Form, ButtonContainer } from './styles';
+import { useSafeAsycnState } from '../../hooks/useSafeAsyncState';
 
 function ContactFormWrapper({ buttonLabel, onSubmit }, ref) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [telephone, setTelephone] = useState('');
   const [categoryId, setCategoryId] = useState('');
-  const [categories, setCategories] = useState([]);
-  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+  const [categories, setCategories] = useSafeAsycnState([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useSafeAsycnState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { errors, setError, removeError, getErrorMessageByFieldName } =
@@ -51,7 +52,7 @@ function ContactFormWrapper({ buttonLabel, onSubmit }, ref) {
   useEffect(() => {
     async function loadCategories() {
       try {
-        setIsLoadingCategories(true);
+        // setIsLoadingCategories(true);
         const result = await CategoriesService.get();
 
         setCategories(result);
@@ -62,7 +63,7 @@ function ContactFormWrapper({ buttonLabel, onSubmit }, ref) {
     }
 
     loadCategories();
-  }, []);
+  }, [setCategories, setIsLoadingCategories]);
 
   function handleNameChange(e) {
     setName(e.target.value);
