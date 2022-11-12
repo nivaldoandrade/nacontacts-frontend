@@ -36,8 +36,8 @@ function ContactFormWrapper({ buttonLabel, onSubmit }, ref) {
       setFieldValue: (contact) => {
         setName(contact.name ?? '');
         setEmail(contact.email ?? '');
-        setTelephone(contact.phone ? formatPhone(contact.phone) : '');
-        setCategoryId(contact.category_id ?? '');
+        setTelephone(contact.telephone ? formatPhone(contact.telephone) : '');
+        setCategoryId(contact.category.id ?? '');
       },
       resetFields: () => {
         setName('');

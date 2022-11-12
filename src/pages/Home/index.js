@@ -58,7 +58,7 @@ export function Home() {
 
       const formattedContacts = result.map((contact) => ({
         ...contact,
-        phoneFormatted: contact.phone && formatPhone(contact.phone)
+        phoneFormatted: contact.telephone && formatPhone(contact.telephone)
       }));
 
       setHasError(false);
@@ -214,8 +214,8 @@ export function Home() {
               <div className="info">
                 <div className="info-header">
                   <strong>{contact.name}</strong>
-                  {contact.category_name && (
-                    <small>{contact.category_name}</small>
+                  {contact.category.name && (
+                    <small>{contact.category.name}</small>
                   )}
                 </div>
                 <span>{contact.email}</span>

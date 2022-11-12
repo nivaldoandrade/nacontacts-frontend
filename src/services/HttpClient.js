@@ -16,7 +16,7 @@ class HttpClient {
   post(path, options) {
     return this.makeRequest(path, {
       method: 'POST',
-      data: options?.data,
+      data: options?.body,
       headers: options?.headers
     });
   }
