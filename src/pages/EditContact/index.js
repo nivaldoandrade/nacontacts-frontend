@@ -1,79 +1,82 @@
-import { useCallback, useEffect, useState, useRef } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+export { default as Container } from './Container';
+export { default as Presentation } from './Presentation';
 
-import contactsService from '../../services/ContactsService';
+// import { useCallback, useEffect, useState, useRef } from 'react';
+// import { useParams, useHistory } from 'react-router-dom';
 
-import toast from '../../utils/toast';
+// import contactsService from '../../services/ContactsService';
 
-import { ContactForm } from '../../components/ContactForm';
-import { PageHeader } from '../../components/PageHeader';
-import { Loader } from '../../components/Loader';
-import { useSafeAsyncAction } from '../../hooks/useSafeAsyncAction';
+// import toast from '../../utils/toast';
 
-export function EditContact() {
-  const [contactName, setContactName] = useState('');
-  const [isLoading, setIsloading] = useState(true);
+// import { ContactForm } from '../../components/ContactForm';
+// import { PageHeader } from '../../components/PageHeader';
+// import { Loader } from '../../components/Loader';
+// import { useSafeAsyncAction } from '../../hooks/useSafeAsyncAction';
 
-  const { id: contactId } = useParams();
-  const history = useHistory();
-  const contactFormRef = useRef(null);
-  const safeAsynAction = useSafeAsyncAction();
+// export function EditContact() {
+//   const [contactName, setContactName] = useState('');
+//   const [isLoading, setIsloading] = useState(true);
 
-  const loadContacts = useCallback(async () => {
-    try {
-      const result = await contactsService.getContactById(contactId);
+//   const { id: contactId } = useParams();
+//   const history = useHistory();
+//   const contactFormRef = useRef(null);
+//   const safeAsynAction = useSafeAsyncAction();
 
-      safeAsynAction(() => {
-        contactFormRef.current.setFieldValue(result);
-        setIsloading(false);
-        setContactName(result.name);
-      });
-    } catch {
-      safeAsynAction(() => {
-        history.push('/');
-        toast({ type: 'danger', text: 'Contato não encontrado!' });
-      });
-    }
-  }, [contactId, history, safeAsynAction]);
+//   const loadContacts = useCallback(async () => {
+//     try {
+//       const result = await contactsService.getContactById(contactId);
 
-  async function handleSubmit(formData) {
-    try {
-      setIsloading(true);
+//       safeAsynAction(() => {
+//         contactFormRef.current.setFieldValue(result);
+//         setIsloading(false);
+//         setContactName(result.name);
+//       });
+//     } catch {
+//       safeAsynAction(() => {
+//         history.push('/');
+//         toast({ type: 'danger', text: 'Contato não encontrado!' });
+//       });
+//     }
+//   }, [contactId, history, safeAsynAction]);
 
-      const contact = {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.telephone,
-        category_id: formData.categoryId
-      };
+//   async function handleSubmit(formData) {
+//     try {
+//       setIsloading(true);
 
-      const result = await contactsService.updateContactById(
-        contactId,
-        contact
-      );
+//       const contact = {
+//         name: formData.name,
+//         email: formData.email,
+//         phone: formData.telephone,
+//         category_id: formData.categoryId
+//       };
 
-      setContactName(result.name);
-      setIsloading(false);
+//       const result = await contactsService.updateContactById(
+//         contactId,
+//         contact
+//       );
 
-      toast({ type: 'success', text: 'Contato editado com sucesso!' });
-    } catch (error) {
-      toast({ type: 'danger', text: 'Ocorreu um erro ao editar o contato!' });
-    }
-  }
+//       setContactName(result.name);
+//       setIsloading(false);
 
-  useEffect(() => {
-    loadContacts();
-  }, [loadContacts]);
+//       toast({ type: 'success', text: 'Contato editado com sucesso!' });
+//     } catch (error) {
+//       toast({ type: 'danger', text: 'Ocorreu um erro ao editar o contato!' });
+//     }
+//   }
 
-  return (
-    <>
-      <Loader isLoading={isLoading} />
-      <PageHeader title={`Editar ${contactName}`} />
-      <ContactForm
-        ref={contactFormRef}
-        buttonLabel="Salvar alterações"
-        onSubmit={handleSubmit}
-      />
-    </>
-  );
-}
+//   useEffect(() => {
+//     loadContacts();
+//   }, [loadContacts]);
+
+//   return (
+//     <>
+//       <Loader isLoading={isLoading} />
+//       <PageHeader title={`Editar ${contactName}`} />
+//       <ContactForm
+//         ref={contactFormRef}
+//         buttonLabel="Salvar alterações"
+//         onSubmit={handleSubmit}
+//       />
+//     </>
+//   );
+// }
