@@ -1,11 +1,13 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
-import { useSafeAsyncAction } from '../../hooks/useSafeAsyncAction';
-import ContactsService from '../../services/ContactsService';
-import toast from '../../utils/toast';
-import Presentation from './Presentation';
+import { useCallback, useEffect, useState, useRef } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 
-export default function Container() {
+import contactsService from '../../services/ContactsService';
+
+import toast from '../../utils/toast';
+
+import { useSafeAsyncAction } from '../../hooks/useSafeAsyncAction';
+
+export function useEditContact() {
   const [contactName, setContactName] = useState('');
   const [isLoading, setIsloading] = useState(true);
 
@@ -16,7 +18,7 @@ export default function Container() {
 
   const loadContacts = useCallback(async () => {
     try {
-      const result = await ContactsService.getContactById(contactId);
+      const result = await contactsService.getContactById(contactId);
 
       safeAsynAction(() => {
         contactFormRef.current.setFieldValue(result);
@@ -42,7 +44,7 @@ export default function Container() {
         category_id: formData.categoryId
       };
 
-      const result = await ContactsService.updateContactById(
+      const result = await contactsService.updateContactById(
         contactId,
         contact
       );
@@ -59,13 +61,10 @@ export default function Container() {
   useEffect(() => {
     loadContacts();
   }, [loadContacts]);
-
-  return (
-    <Presentation
-      contactFormRef={contactFormRef}
-      contactName={contactName}
-      isLoading={isLoading}
-      onSubmit={handleSubmit}
-    />
-  );
+  return {
+    isLoading,
+    contactName,
+    contactFormRef,
+    handleSubmit
+  };
 }
