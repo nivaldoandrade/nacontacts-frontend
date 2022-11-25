@@ -1,29 +1,17 @@
 /* eslint-disable no-nested-ternary */
-import { Link } from 'react-router-dom';
-
 import { useHome } from './useHome';
 
 import { Loader } from '../../components/Loader';
-import { Error } from '../../components/Error';
 import { Modal } from '../../components/Modal';
 
-import arrowIcon from '../../assets/icons/arrow.svg';
-import editIcon from '../../assets/icons/edit.svg';
-import deleteIcon from '../../assets/icons/delete.svg';
-import sadIcon from '../../assets/icons/sad.svg';
-import emptyBoxIcon from '../../assets/icons/empty-box.svg';
-import magnifierQuestionIcon from '../../assets/icons/magnifier-question.svg';
+import { InputSearch } from './components/InputSearch';
+import { Header } from './components/Header';
+import { EmptyList } from './components/EmptyList';
+import { ErrorStatus } from './components/ErrorStatus';
 
-import {
-  Container,
-  InputSearchBarContainer,
-  ListHeader,
-  Divider,
-  EmptyContainer,
-  SearchEmptyContainer,
-  ListContainer,
-  Card
-} from './styles';
+import { Container, Divider } from './styles';
+import { SearchNotFound } from './components/SearchNotFound';
+import { ListContacts } from './components/ListContacts';
 
 export function Home() {
   const {
@@ -48,115 +36,49 @@ export function Home() {
     <Container>
       <Loader isLoading={isLoading} />
 
-      <Modal
-        isLoading={isLoadingDeleteContact}
-        isVisible={isVisibleModalDeleteContact}
-        title={`Tem certeza que deseja remover o contato ”${contactBeingDelete?.name}”?`}
-        subtitle="Esta ação não poderá ser desfeita!"
-        confirmLabel="Deletar"
-        danger
-        onCancel={handleCloseDeleteModal}
-        onConfirm={handleConfirmDeleteContact}
-      />
-
       {!hasError && contacts.length > 0 && (
-        <InputSearchBarContainer>
-          <input
-            value={searchTerm}
-            type="text"
-            placeholder="Pesquisar contato..."
-            onChange={(e) => handleChangeSearchTerm(e)}
-          />
-        </InputSearchBarContainer>
-      )}
-
-      <ListHeader
-        hasError={hasError}
-        justifyContent={
-          hasError
-            ? 'flex-end'
-            : contacts.length > 0
-            ? 'space-between'
-            : 'center'
-        }
-      >
-        {!hasError && contacts.length > 0 && (
-          <strong>
-            {filteredContacts.length}{' '}
-            {filteredContacts.length === 1 ? 'contato' : 'contatos'}
-          </strong>
-        )}
-        <Link to="/new">Novo Contato</Link>
-      </ListHeader>
-
-      <Divider />
-
-      {hasError && (
-        <Error
-          icon={{ src: sadIcon, alt: 'sad' }}
-          message="Ocorreu um erro ao obter os seus contatos!"
-          onCLick={() => handleLoadContacts}
+        <InputSearch
+          searchTerm={searchTerm}
+          onChange={handleChangeSearchTerm}
         />
       )}
 
-      {contacts.length === 0 && !isLoading && !hasError && (
-        <EmptyContainer>
-          <img src={emptyBoxIcon} alt="Empty box" />
-          <span>
-            Você ainda não tem nenhum contato cadastrado! <br />
-            Clique no botão<strong> ”Novo contato” </strong>à cima para
-            cadastrar o seu primeiro!
-          </span>
-        </EmptyContainer>
-      )}
+      <Header
+        hasError={hasError}
+        qtyContacts={contacts.length}
+        qtyFilteredContacts={filteredContacts.length}
+      />
 
-      {!hasError && contacts.length > 0 && filteredContacts.length < 1 && (
-        <SearchEmptyContainer>
-          <img src={magnifierQuestionIcon} alt="Magnifier question" />
-          <span>
-            Nenhum resultado foi encontrado para
-            <b> ”{searchTerm}”</b>.
-          </span>
-        </SearchEmptyContainer>
+      <Divider />
+
+      {hasError && <ErrorStatus handleTryAgain={handleLoadContacts} />}
+
+      {contacts.length === 0 && !isLoading && !hasError && <EmptyList />}
+
+      {!hasError && contacts.length > 0 && filteredContacts.length === 0 && (
+        <SearchNotFound searchTerm={searchTerm} />
       )}
 
       {!hasError && (
-        <ListContainer orderByName={orderByName}>
-          {filteredContacts.length > 0 && (
-            <header>
-              <button type="button" onClick={handleToggleOrderByName}>
-                <span>Nome</span>
-                <img src={arrowIcon} alt="Arrow" />
-              </button>
-            </header>
-          )}
+        <>
+          <ListContacts
+            orderByName={orderByName}
+            filteredContacts={filteredContacts}
+            onToggleOrderByName={handleToggleOrderByName}
+            onDeleteContact={handleDeleteContact}
+          />
 
-          {filteredContacts.map((contact) => (
-            <Card key={contact.id}>
-              <div className="info">
-                <div className="info-header">
-                  <strong>{contact.name}</strong>
-                  {contact.category.name && (
-                    <small>{contact.category.name}</small>
-                  )}
-                </div>
-                <span>{contact.email}</span>
-                <span>{contact.phoneFormatted}</span>
-              </div>
-              <div className="actions">
-                <Link to={`/edit/${contact.id}`}>
-                  <img src={editIcon} alt="Edit" />
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => handleDeleteContact(contact)}
-                >
-                  <img src={deleteIcon} alt="Delete" />
-                </button>
-              </div>
-            </Card>
-          ))}
-        </ListContainer>
+          <Modal
+            isLoading={isLoadingDeleteContact}
+            isVisible={isVisibleModalDeleteContact}
+            title={`Tem certeza que deseja remover o contato ”${contactBeingDelete?.name}”?`}
+            subtitle="Esta ação não poderá ser desfeita!"
+            confirmLabel="Deletar"
+            danger
+            onCancel={handleCloseDeleteModal}
+            onConfirm={handleConfirmDeleteContact}
+          />
+        </>
       )}
     </Container>
   );
