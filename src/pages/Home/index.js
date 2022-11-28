@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import { useHome } from './useHome';
 
 import { Loader } from '../../components/Loader';
@@ -32,11 +31,15 @@ export function Home() {
     handleChangeSearchTerm
   } = useHome();
 
+  const hasContacts = !hasError && contacts.length > 0;
+  const isEmptyList = !hasError && !isLoading && !hasContacts;
+  const isSearchNotFound = hasContacts && filteredContacts.length < 1;
+
   return (
     <Container>
       <Loader isLoading={isLoading} />
 
-      {!hasError && contacts.length > 0 && (
+      {hasContacts && (
         <InputSearch
           searchTerm={searchTerm}
           onChange={handleChangeSearchTerm}
@@ -53,11 +56,9 @@ export function Home() {
 
       {hasError && <ErrorStatus handleTryAgain={handleLoadContacts} />}
 
-      {contacts.length === 0 && !isLoading && !hasError && <EmptyList />}
+      {isEmptyList && <EmptyList />}
 
-      {!hasError && contacts.length > 0 && filteredContacts.length === 0 && (
-        <SearchNotFound searchTerm={searchTerm} />
-      )}
+      {isSearchNotFound && <SearchNotFound searchTerm={searchTerm} />}
 
       {!hasError && (
         <>
