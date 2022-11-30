@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Button } from '../Button';
@@ -16,14 +17,34 @@ export function Modal({
   onCancel,
   onConfirm
 }) {
-  if (!isVisible) {
+  const [shouldRender, setShouldRender] = useState(isVisible);
+
+  useEffect(() => {
+    if (isVisible) {
+      setShouldRender(true);
+    }
+
+    let timer;
+
+    if (!isVisible) {
+      timer = setTimeout(() => {
+        setShouldRender(false);
+      }, 200);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [isVisible]);
+
+  if (!shouldRender) {
     return null;
   }
 
   return (
     <ReactPortal containerId="modal-root">
-      <Overlay>
-        <Container danger={danger}>
+      <Overlay isLeaving={!isVisible}>
+        <Container danger={danger} isLeaving={!isVisible}>
           <h1>{title}</h1>
           <p>{subtitle}</p>
           <footer>
