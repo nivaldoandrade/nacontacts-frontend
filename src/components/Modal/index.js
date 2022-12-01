@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Button } from '../Button';
@@ -18,22 +18,30 @@ export function Modal({
   onConfirm
 }) {
   const [shouldRender, setShouldRender] = useState(isVisible);
+  const overlayRef = useRef(null);
 
   useEffect(() => {
     if (isVisible) {
       setShouldRender(true);
     }
 
-    let timer;
+    function handleAnimationEnd() {
+      setShouldRender(false);
+    }
 
-    if (!isVisible) {
-      timer = setTimeout(() => {
-        setShouldRender(false);
-      }, 200);
+    const overlayRefElement = overlayRef.current;
+
+    if (!isVisible && overlayRefElement) {
+      overlayRefElement.addEventListener('animationend', handleAnimationEnd);
     }
 
     return () => {
-      clearTimeout(timer);
+      if (overlayRefElement) {
+        overlayRefElement.removeEventListener(
+          'animationend',
+          handleAnimationEnd
+        );
+      }
     };
   }, [isVisible]);
 
@@ -43,7 +51,7 @@ export function Modal({
 
   return (
     <ReactPortal containerId="modal-root">
-      <Overlay isLeaving={!isVisible}>
+      <Overlay isLeaving={!isVisible} ref={overlayRef}>
         <Container danger={danger} isLeaving={!isVisible}>
           <h1>{title}</h1>
           <p>{subtitle}</p>
