@@ -1,12 +1,11 @@
-import { useCallback, useRef, useState, createRef } from 'react';
+import { useCallback, useRef, useState, createRef, useEffect } from 'react';
 
 export function useAnimatedList(initialValue = []) {
   const [items, setItems] = useState(initialValue);
   const [pendingRemoveItemsIds, setPendingRemoveItemsIds] = useState([]);
 
   const animatedRefs = useRef(new Map());
-
-  console.log(animatedRefs);
+  const animationEndListeners = useRef(new Map());
 
   const handleRemoveItems = useCallback((id) => {
     setItems((state) => state.filter((item) => item.id !== id));
@@ -14,6 +13,23 @@ export function useAnimatedList(initialValue = []) {
       state.filter((itemId) => itemId !== id)
     );
   }, []);
+
+  useEffect(() => {
+    pendingRemoveItemsIds.forEach((itemId) => {
+      const animatedRef = animatedRefs.current.get(itemId);
+      const alReadyListenerExists = animationEndListeners.current.has(itemId);
+
+      if (animatedRef?.current && !alReadyListenerExists) {
+        animationEndListeners.current.set(itemId, true);
+
+        animatedRef.current.addEventListener(
+          'animationend',
+          (event) =>
+            event.animationName === 'cSroTe' && handleRemoveItems(itemId)
+        );
+      }
+    });
+  }, [pendingRemoveItemsIds, handleRemoveItems]);
 
   const handlePendingRemovalItems = useCallback((id) => {
     setPendingRemoveItemsIds((state) => [...state, id]);
