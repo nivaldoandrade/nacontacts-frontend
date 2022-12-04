@@ -1,33 +1,62 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { Container } from './styles';
 
 import xCircleIcon from '../../../assets/icons/x-circle.svg';
 import checkCircleIcon from '../../../assets/icons/check-circle.svg';
 
-export function ToastMessage({ message, onRemoveMessage }) {
+export function ToastMessage({
+  message,
+  onRemoveMessage,
+  onPendingRemovalMessage,
+  isLeaving
+}) {
+  const containerRef = useRef(null);
+  useEffect(() => {
+    function handleRemoveMessage() {
+      onRemoveMessage(message.id);
+    }
+
+    const containerRefElement = containerRef.current;
+    if (isLeaving) {
+      containerRefElement.addEventListener(
+        'animationend',
+        (event) => event.animationName === 'cSroTe' && handleRemoveMessage()
+      );
+    }
+
+    return () => {
+      containerRefElement.removeEventListener(
+        'animationend',
+        (event) => event.animationName === 'cSroTe' && handleRemoveMessage()
+      );
+    };
+  }, [isLeaving, message.id, onRemoveMessage]);
+
   useEffect(() => {
     const settTimeoutId = setTimeout(() => {
-      onRemoveMessage(message.id);
+      onPendingRemovalMessage(message.id);
     }, message.duration || 7000);
 
     return () => {
       clearTimeout(settTimeoutId);
     };
-  }, [message, onRemoveMessage]);
+  }, [message, onPendingRemovalMessage]);
 
   function handleOnClickMessage() {
-    onRemoveMessage(message.id);
+    onPendingRemovalMessage(message.id);
   }
 
   return (
     <Container
+      ref={containerRef}
       duration={message.duration || 7000}
       type={message.type}
       onClick={handleOnClickMessage}
       tabIndex={0}
       role="button"
+      isLeaving={isLeaving}
     >
       {message.type === 'danger' && <img src={xCircleIcon} alt="Danger" />}
       {message.type === 'success' && (
@@ -45,5 +74,7 @@ ToastMessage.propTypes = {
     type: PropTypes.oneOf(['default', 'danger', 'success']),
     duration: PropTypes.number
   }).isRequired,
-  onRemoveMessage: PropTypes.func.isRequired
+  onPendingRemovalMessage: PropTypes.func.isRequired,
+  onRemoveMessage: PropTypes.func.isRequired,
+  isLeaving: PropTypes.bool.isRequired
 };

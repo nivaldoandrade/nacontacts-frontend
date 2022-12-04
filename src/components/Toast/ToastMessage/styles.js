@@ -12,6 +12,30 @@ const containerVariants = {
   `
 };
 
+const FadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+`;
+
+const FadeOut = keyframes`
+    from {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+
+    to {
+      opacity: 0;
+      transform: translateY(100px);
+    }
+  `;
+
 const progressBarAnimation = keyframes`
   from { width: 100%; }
   to { width: 0; }
@@ -30,6 +54,14 @@ export const Container = styled.div`
   justify-content: center;
 
   ${({ type }) => containerVariants[type] || containerVariants.default};
+
+  animation: ${FadeIn} 0.3s;
+
+  ${({ isLeaving }) =>
+    isLeaving &&
+    css`
+      animation: ${FadeOut} 0.3s;
+    `}
 
   img {
     margin-right: 8px;
