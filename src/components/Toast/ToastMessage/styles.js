@@ -42,6 +42,7 @@ const progressBarAnimation = keyframes`
 `;
 
 export const Container = styled.div`
+  position: relative;
   background-color: green;
   padding: 16px 32px;
   color: #fff;
@@ -84,7 +85,7 @@ export const Container = styled.div`
     background-color: #fff;
     animation-name: ${progressBarAnimation};
     animation-duration: ${({ duration }) => `${duration}ms`};
-    animation-timing-function: ease-in;
+    animation-timing-function: linear;
     animation-fill-mode: forwards;
   }
 `;
