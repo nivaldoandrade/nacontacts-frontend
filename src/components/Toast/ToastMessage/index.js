@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 import { Container } from './styles';
 
@@ -8,31 +8,31 @@ import checkCircleIcon from '../../../assets/icons/check-circle.svg';
 
 export function ToastMessage({
   message,
-  onRemoveMessage,
   onPendingRemovalMessage,
-  isLeaving
+  isLeaving,
+  animatedRef
 }) {
-  const containerRef = useRef(null);
-  useEffect(() => {
-    function handleRemoveMessage() {
-      onRemoveMessage(message.id);
-    }
+  // const containerRef = useRef(null);
+  // useEffect(() => {
+  //   function handleRemoveMessage() {
+  //     onRemoveMessage(message.id);
+  //   }
 
-    const containerRefElement = containerRef.current;
-    if (isLeaving) {
-      containerRefElement.addEventListener(
-        'animationend',
-        (event) => event.animationName === 'cSroTe' && handleRemoveMessage()
-      );
-    }
+  //   const containerRefElement = containerRef.current;
+  //   if (isLeaving) {
+  //     containerRefElement.addEventListener(
+  //       'animationend',
+  //       (event) => event.animationName === 'cSroTe' && handleRemoveMessage()
+  //     );
+  //   }
 
-    return () => {
-      containerRefElement.removeEventListener(
-        'animationend',
-        (event) => event.animationName === 'cSroTe' && handleRemoveMessage()
-      );
-    };
-  }, [isLeaving, message.id, onRemoveMessage]);
+  //   return () => {
+  //     containerRefElement.removeEventListener(
+  //       'animationend',
+  //       (event) => event.animationName === 'cSroTe' && handleRemoveMessage()
+  //     );
+  //   };
+  // }, [isLeaving, message.id, onRemoveMessage]);
 
   useEffect(() => {
     const settTimeoutId = setTimeout(() => {
@@ -50,7 +50,7 @@ export function ToastMessage({
 
   return (
     <Container
-      ref={containerRef}
+      ref={animatedRef}
       duration={message.duration || 7000}
       type={message.type}
       onClick={handleOnClickMessage}
@@ -75,6 +75,6 @@ ToastMessage.propTypes = {
     duration: PropTypes.number
   }).isRequired,
   onPendingRemovalMessage: PropTypes.func.isRequired,
-  onRemoveMessage: PropTypes.func.isRequired,
-  isLeaving: PropTypes.bool.isRequired
+  isLeaving: PropTypes.bool.isRequired,
+  animatedRef: PropTypes.shape().isRequired
 };
