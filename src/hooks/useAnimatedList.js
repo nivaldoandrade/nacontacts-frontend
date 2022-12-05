@@ -7,11 +7,15 @@ export function useAnimatedList(initialValue = []) {
   const animatedRefs = useRef(new Map());
   const animationEndListeners = useRef(new Map());
 
-  const handleRemoveItems = useCallback((id) => {
-    setItems((state) => state.filter((item) => item.id !== id));
-    setPendingRemoveItemsIds((state) =>
-      state.filter((itemId) => itemId !== id)
-    );
+  const handleRemoveItems = useCallback((itemId) => {
+    const removeListener = animationEndListeners.current.get(itemId);
+    removeListener();
+
+    animationEndListeners.current.delete(itemId);
+    animatedRefs.current.delete(itemId);
+
+    setItems((state) => state.filter((item) => item.id !== itemId));
+    setPendingRemoveItemsIds((state) => state.filter((id) => id !== itemId));
   }, []);
 
   useEffect(() => {
@@ -20,15 +24,31 @@ export function useAnimatedList(initialValue = []) {
       const alReadyListenerExists = animationEndListeners.current.has(itemId);
 
       if (animatedRef?.current && !alReadyListenerExists) {
-        animationEndListeners.current.set(itemId, true);
+        const onAnimationEnd = () => {
+          handleRemoveItems(itemId);
+        };
+
+        const removeListener = () => {
+          animatedRef.current.removeEventListener(
+            'animationend',
+            (event) => event.animationName === 'cSroTe' && onAnimationEnd()
+          );
+        };
+
+        animationEndListeners.current.set(itemId, removeListener);
 
         animatedRef.current.addEventListener(
           'animationend',
-          (event) =>
-            event.animationName === 'cSroTe' && handleRemoveItems(itemId)
+          (event) => event.animationName === 'cSroTe' && onAnimationEnd()
         );
       }
     });
+
+    const removeListeners = animationEndListeners.current;
+
+    return () => {
+      removeListeners.forEach((removeListener) => removeListener());
+    };
   }, [pendingRemoveItemsIds, handleRemoveItems]);
 
   const handlePendingRemovalItems = useCallback((id) => {
