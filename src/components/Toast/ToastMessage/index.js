@@ -1,39 +1,18 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 
 import { Container } from './styles';
 
 import xCircleIcon from '../../../assets/icons/x-circle.svg';
 import checkCircleIcon from '../../../assets/icons/check-circle.svg';
 
-export function ToastMessage({
+function ToastMessageMemo({
   message,
   onPendingRemovalMessage,
   isLeaving,
   animatedRef
 }) {
-  // const containerRef = useRef(null);
-  // useEffect(() => {
-  //   function handleRemoveMessage() {
-  //     onRemoveMessage(message.id);
-  //   }
-
-  //   const containerRefElement = containerRef.current;
-  //   if (isLeaving) {
-  //     containerRefElement.addEventListener(
-  //       'animationend',
-  //       (event) => event.animationName === 'cSroTe' && handleRemoveMessage()
-  //     );
-  //   }
-
-  //   return () => {
-  //     containerRefElement.removeEventListener(
-  //       'animationend',
-  //       (event) => event.animationName === 'cSroTe' && handleRemoveMessage()
-  //     );
-  //   };
-  // }, [isLeaving, message.id, onRemoveMessage]);
-
+  console.log(`Renderizou o a mensagem com id ${message.id}`);
   useEffect(() => {
     const settTimeoutId = setTimeout(() => {
       onPendingRemovalMessage(message.id);
@@ -67,7 +46,7 @@ export function ToastMessage({
   );
 }
 
-ToastMessage.propTypes = {
+ToastMessageMemo.propTypes = {
   message: PropTypes.shape({
     id: PropTypes.number.isRequired,
     text: PropTypes.string.isRequired,
@@ -78,3 +57,5 @@ ToastMessage.propTypes = {
   isLeaving: PropTypes.bool.isRequired,
   animatedRef: PropTypes.shape().isRequired
 };
+
+export const ToastMessage = memo(ToastMessageMemo);
