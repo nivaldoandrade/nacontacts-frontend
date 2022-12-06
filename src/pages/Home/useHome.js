@@ -1,4 +1,10 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useDeferredValue,
+  useMemo
+} from 'react';
 
 import ContactsService from '../../services/ContactsService';
 
@@ -10,20 +16,22 @@ import APIError from '../../errors/APIError';
 export function useHome() {
   const [contacts, setContacts] = useState([]);
   const [orderByName, setOrderByName] = useState('ASC');
-  const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [isVisibleModalDeleteContact, setIsVisibleModalDeleteContact] =
     useState(false);
   const [contactBeingDelete, setContactBeingDelete] = useState(null);
   const [isLoadingDeleteContact, setIsLoadingDeleteContact] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const deferredSearchTerm = useDeferredValue(searchTerm);
 
   const filteredContacts = useMemo(
     () =>
       contacts.filter((contact) =>
-        contact.name.toLowerCase().includes(searchTerm.toLowerCase())
+        contact.name.toLowerCase().includes(deferredSearchTerm.toLowerCase())
       ),
-    [contacts, searchTerm]
+    [contacts, deferredSearchTerm]
   );
 
   const loadContacts = useCallback(async () => {
@@ -59,21 +67,22 @@ export function useHome() {
   }, [loadContacts]);
 
   function handleChangeSearchTerm(e) {
-    setSearchTerm(e.target.value);
+    const { value } = e.target;
+    setSearchTerm(value);
   }
 
-  function handleToggleOrderByName() {
+  const handleToggleOrderByName = useCallback(() => {
     setOrderByName((state) => (state === 'ASC' ? 'DESC' : 'ASC'));
-  }
+  }, []);
 
   function handleLoadContacts() {
     loadContacts();
   }
 
-  function handleDeleteContact(contact) {
+  const handleDeleteContact = useCallback((contact) => {
     setIsVisibleModalDeleteContact(true);
     setContactBeingDelete(contact);
-  }
+  }, []);
 
   function handleCloseDeleteModal() {
     setIsVisibleModalDeleteContact(false);
