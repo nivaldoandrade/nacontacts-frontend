@@ -50,10 +50,8 @@ export function useHome() {
     } catch (error) {
       if (error instanceof APIError) {
         // MOSTRAR ALGO PARA USUÁRIO RELACIONADO ALGUM ERRO DA API
-        console.log(error);
       } else {
         // MOSTRAR ALGO PARA USUÁRIO RELACIONADO ALGUM ERRO NO CÓDIGO/JAVASCRIPT NO FRONT-END
-        console.log(error);
       }
 
       setHasError(error.name);

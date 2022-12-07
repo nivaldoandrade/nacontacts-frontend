@@ -12,7 +12,6 @@ function ToastMessageMemo({
   isLeaving,
   animatedRef
 }) {
-  console.log(`Renderizou o a mensagem com id ${message.id}`);
   useEffect(() => {
     const settTimeoutId = setTimeout(() => {
       onPendingRemovalMessage(message.id);

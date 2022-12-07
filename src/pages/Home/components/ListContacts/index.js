@@ -14,8 +14,6 @@ function ListContactsMemo({
   onToggleOrderByName,
   onDeleteContact
 }) {
-  console.log(filteredContacts);
-
   return (
     <Container orderByName={orderByName}>
       {filteredContacts.length > 0 && (
