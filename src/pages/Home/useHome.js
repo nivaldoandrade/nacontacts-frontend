@@ -11,8 +11,6 @@ import ContactsService from '../../services/ContactsService';
 import formatPhone from '../../utils/formatPhone';
 import toast from '../../utils/toast';
 
-import APIError from '../../errors/APIError';
-
 export function useHome() {
   const [contacts, setContacts] = useState([]);
   const [orderByName, setOrderByName] = useState('ASC');
@@ -34,34 +32,40 @@ export function useHome() {
     [contacts, deferredSearchTerm]
   );
 
-  const loadContacts = useCallback(async () => {
-    try {
-      setIsLoading(true);
+  const loadContacts = useCallback(
+    async (signal) => {
+      try {
+        setIsLoading(true);
 
-      const result = await ContactsService.listContacts(orderByName);
+        const result = await ContactsService.listContacts(orderByName, signal);
 
-      const formattedContacts = result.map((contact) => ({
-        ...contact,
-        phoneFormatted: contact.telephone && formatPhone(contact.telephone)
-      }));
+        const formattedContacts = result.map((contact) => ({
+          ...contact,
+          phoneFormatted: contact.telephone && formatPhone(contact.telephone)
+        }));
 
-      setHasError(false);
-      setContacts(formattedContacts);
-    } catch (error) {
-      if (error instanceof APIError) {
-        // MOSTRAR ALGO PARA USUÁRIO RELACIONADO ALGUM ERRO DA API
-      } else {
-        // MOSTRAR ALGO PARA USUÁRIO RELACIONADO ALGUM ERRO NO CÓDIGO/JAVASCRIPT NO FRONT-END
+        setHasError(false);
+        setContacts(formattedContacts);
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') {
+          return;
+        }
+
+        setHasError(true);
+      } finally {
+        setIsLoading(false);
       }
-
-      setHasError(error.name);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [orderByName]);
+    },
+    [orderByName]
+  );
 
   useEffect(() => {
-    loadContacts();
+    const controller = new AbortController();
+    loadContacts(controller.signal);
+
+    return () => {
+      controller.abort();
+    };
   }, [loadContacts]);
 
   function handleChangeSearchTerm(e) {
