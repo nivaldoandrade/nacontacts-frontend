@@ -6,7 +6,7 @@ import GlobalStyles from '../../assets/styles/global';
 import { Container } from './styles';
 import { Header } from '../Header';
 // import { ContactList } from '../ContactsList';
-import { Routes } from '../../routes';
+import { Router } from '../../router';
 import { ToastContainer } from '../Toast/ToastContainer';
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
       <Container>
         <Header />
         {/* <ContactList /> */}
-        <Routes />
+        <Router />
       </Container>
       <ToastContainer />
       <GlobalStyles />
