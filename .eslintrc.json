@@ -1,13 +1,15 @@
 {
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "jest/globals": true
   },
   "extends": [
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "airbnb",
-    "prettier"
+    "prettier",
+    "plugin:jest/recommended"
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -19,7 +21,8 @@
   "plugins": [
     "react",
     "react-hooks",
-    "prettier"
+    "prettier",
+    "jest"
   ],
   "rules": {
     "react/jsx-filename-extension": [
