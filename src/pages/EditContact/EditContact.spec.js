@@ -5,9 +5,7 @@ import { customRender } from '../../utils/customRender';
 
 jest.mock('react-router-dom', () => ({
   useParams: () => ({ id: '1' }),
-  useHistory: () => ({
-    push: () => {}
-  }),
+  useNavigate: () => jest.fn(),
   Link: ({ children }) => children
 }));
 

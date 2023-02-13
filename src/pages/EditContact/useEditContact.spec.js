@@ -5,13 +5,11 @@ import toast from '../../utils/toast';
 
 import { useEditContact } from './useEditContact';
 
-const mockedUseHistoryPush = jest.fn();
+const mockNagivate = jest.fn();
 
 jest.mock('react-router-dom', () => ({
   useParams: () => jest.fn(),
-  useHistory: () => ({
-    push: mockedUseHistoryPush
-  })
+  useNavigate: () => mockNagivate
 }));
 
 jest.mock('../../utils/toast');
@@ -60,7 +58,7 @@ describe('UseEditContact Hook', () => {
         text: 'Contato não encontrado!'
       });
       expect(result.current.contactName).toBe('');
-      expect(mockedUseHistoryPush).toHaveBeenCalledWith('/');
+      expect(mockNagivate).toHaveBeenCalledWith('/', { replace: true });
     });
   });
 
@@ -71,7 +69,7 @@ describe('UseEditContact Hook', () => {
 
     renderHook(() => useEditContact());
 
-    expect(mockedUseHistoryPush).not.toHaveBeenCalledWith('/');
+    expect(mockNagivate).not.toHaveBeenCalledWith('/');
   });
 
   it('should update the contact and set contact name state and loading to false', async () => {
