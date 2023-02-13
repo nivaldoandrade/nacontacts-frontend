@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 
 import { Button } from '../Button';
 
+import sadIcon from '../../assets/icons/sad.svg';
+
 import { ErrorContainer } from './styles';
 
 export function Error({ icon, message, onCLick }) {
@@ -20,9 +22,16 @@ export function Error({ icon, message, onCLick }) {
 
 Error.propTypes = {
   icon: PropTypes.shape({
-    src: PropTypes.string.isRequired,
-    alt: PropTypes.string.isRequired
-  }).isRequired,
+    src: PropTypes.string,
+    alt: PropTypes.string
+  }),
   message: PropTypes.string.isRequired,
   onCLick: PropTypes.func.isRequired
+};
+
+Error.defaultProps = {
+  icon: {
+    src: sadIcon,
+    alt: 'sad'
+  }
 };

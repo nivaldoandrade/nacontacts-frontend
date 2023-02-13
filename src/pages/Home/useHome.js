@@ -1,9 +1,9 @@
 import {
-  useState,
-  useEffect,
   useCallback,
   useDeferredValue,
-  useMemo
+  useEffect,
+  useMemo,
+  useState
 } from 'react';
 
 import ContactsService from '../../services/ContactsService';
@@ -93,6 +93,7 @@ export function useHome() {
   async function handleConfirmDeleteContact() {
     try {
       setIsLoadingDeleteContact(true);
+
       await ContactsService.deleteContactById(contactBeingDelete.id);
 
       setContacts((state) =>

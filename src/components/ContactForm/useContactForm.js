@@ -1,9 +1,9 @@
-import { useEffect, useState, useImperativeHandle } from 'react';
+import { useEffect, useImperativeHandle, useState } from 'react';
 import { useErrors } from '../../hooks/useErrors';
-import CategoriesService from '../../services/CategoriesService';
-import isEmailValid from '../../utils/isEmailValid';
-import formatPhone from '../../utils/formatPhone';
 import { useSafeAsycnState } from '../../hooks/useSafeAsyncState';
+import CategoriesService from '../../services/CategoriesService';
+import formatPhone from '../../utils/formatPhone';
+import isEmailValid from '../../utils/isEmailValid';
 
 export function useContactForm(onSubmit, ref) {
   const [name, setName] = useState('');
@@ -17,7 +17,7 @@ export function useContactForm(onSubmit, ref) {
   const { errors, setError, removeError, getErrorMessageByFieldName } =
     useErrors();
 
-  const isFormValid = name && errors.length === 0;
+  const isFormValid = name && email && errors.length === 0;
 
   useImperativeHandle(
     ref,
@@ -73,7 +73,7 @@ export function useContactForm(onSubmit, ref) {
     setEmail(e.target.value);
 
     if (e.target.value && !isEmailValid(e.target.value)) {
-      setError({ field: 'email', message: 'Email inválido' });
+      setError({ field: 'email', message: 'Email é inválido' });
     } else {
       removeError('email');
     }

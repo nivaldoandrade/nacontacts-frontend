@@ -34,7 +34,7 @@ class ContactsService {
 
   updateContactById(id, data) {
     return this.httpClient.put(`/contacts/${id}`, {
-      data
+      body: data
     });
   }
 

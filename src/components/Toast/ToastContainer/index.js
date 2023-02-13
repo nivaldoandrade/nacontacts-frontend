@@ -4,8 +4,7 @@ import { Container } from './styles';
 import { useToastContainer } from './useToastContainer';
 
 export function ToastContainer() {
-  const { renderList, handleRemoveMessage, handlePendingRemovalMessage } =
-    useToastContainer();
+  const { renderList, handlePendingRemovalMessage } = useToastContainer();
 
   return (
     <Container>
@@ -13,7 +12,6 @@ export function ToastContainer() {
         <ToastMessage
           key={message.id}
           message={message}
-          onRemoveMessage={handleRemoveMessage}
           onPendingRemovalMessage={handlePendingRemovalMessage}
           isLeaving={isLeaving}
           animatedRef={animatedRef}

@@ -9,6 +9,12 @@ module.exports = {
   },
   testEnvironment: 'jsdom',
   collectCoverage: true,
-  collectCoverageFrom: ['src/**/*.js', '!src/**/*.spec.js', '!src/assets/**/*'],
+  collectCoverageFrom: [
+    'src/**/*.js',
+    '!src/**/*.spec.js',
+    '!src/assets/**/*',
+    '!src/utils/delay.js',
+    '!src/index.js'
+  ],
   coverageReporters: ['lcov', 'json']
 };

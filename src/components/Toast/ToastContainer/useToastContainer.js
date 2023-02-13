@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
-import { toastEventManager } from '../../../utils/toast';
 import { useAnimatedList } from '../../../hooks/useAnimatedList';
+import { toastEventManager } from '../../../utils/toast';
 
 export function useToastContainer() {
-  const { setItems, renderList, handlePendingRemovalItems, handleRemoveItems } =
-    useAnimatedList();
+  const { setItems, renderList, handlePendingRemovalItems } = useAnimatedList();
 
   useEffect(() => {
     function handleAddEventListener({ type, text, duration }) {
@@ -27,7 +26,6 @@ export function useToastContainer() {
 
   return {
     renderList,
-    handleRemoveMessage: handleRemoveItems,
     handlePendingRemovalMessage: handlePendingRemovalItems
   };
 }

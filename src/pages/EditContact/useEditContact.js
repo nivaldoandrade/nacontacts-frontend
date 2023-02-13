@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState, useRef } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 
 import contactsService from '../../services/ContactsService';
 
@@ -67,6 +67,8 @@ export function useEditContact() {
 
   useEffect(() => {
     const controller = new AbortController();
+    contactFormRef.current = { setFieldValue: () => {} };
+
     loadContacts(controller.signal);
 
     return () => {

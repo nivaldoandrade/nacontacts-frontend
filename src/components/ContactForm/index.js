@@ -2,12 +2,12 @@ import { forwardRef } from 'react';
 
 import PropTypes from 'prop-types';
 
+import { Button } from '../Button';
 import { FormGroup } from '../FormGroup';
 import Input from '../Input';
 import Select from '../Select';
-import { Button } from '../Button';
 
-import { Form, ButtonContainer } from './styles';
+import { ButtonContainer, Form } from './styles';
 import { useContactForm } from './useContactForm';
 
 function ContactFormWrapper({ buttonLabel, onSubmit }, ref) {
@@ -41,7 +41,7 @@ function ContactFormWrapper({ buttonLabel, onSubmit }, ref) {
       </FormGroup>
       <FormGroup error={getErrorMessageByFieldName('email')}>
         <Input
-          type="email"
+          type="Email"
           error={getErrorMessageByFieldName('email')}
           placeholder="E-mail"
           value={email}
@@ -60,6 +60,7 @@ function ContactFormWrapper({ buttonLabel, onSubmit }, ref) {
       </FormGroup>
       <FormGroup isLoading={isLoadingCategories}>
         <Select
+          data-testid="select-element"
           value={categoryId}
           onChange={(e) => setCategoryId(e.target.value)}
           disabled={isLoadingCategories || isSubmitting}
